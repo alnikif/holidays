@@ -1,10 +1,15 @@
 import './App.scss';
-import Countries from './components/Countries'
+import Countries from './components/Countries';
+import Holidays from './components/Holidays';
+import { Outlet } from 'react-router-dom';
+
 
 function App() {
   return (
     <div className="App">
-      <Countries />
+      <div className='header'></div>
+      <Outlet />
+      <div className='footer'></div>
     </div>
   );
 }
