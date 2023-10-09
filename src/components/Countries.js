@@ -1,36 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import useDebounce from '../hooks/useDebounce';
 
 const Countries = ()=> {
     const [countries, setCountries] = useState([]);
     const [searchValue, setSearchValue] = useState('');
     const [searchCountries, setSearchCountries] = useState([]);
+    const debouncedSearchValue = useDebounce(searchValue);
+
     const getCountries = async ()=> {
         try{
             const response = await axios.get(`https://holidayapi.com/v1/countries?key=${process.env.REACT_APP_ACCESS_KEY}`)
-            setCountries(response.data.countries);
-            setSearchCountries(response.data.countries);
+            const { data: { countries } } = response;
 
+            setCountries(countries);
+            setSearchCountries(countries);
         }catch(error){
             console.log(error)
         }
     }
+
     useEffect(()=> {
         getCountries();
-    },[])
+    },[]);
+
     useEffect(()=>{
-        const timeout = setTimeout(()=> {
-            if(countries.length){
-                setSearchCountries(countries.filter((el) =>  el.name.includes(searchValue)))
-            }
-        },600)
-        return ()=> clearTimeout(timeout);
-    },[searchValue])
+        if(!countries.length) return;
+
+        setSearchCountries(countries.filter((el) =>  el.name.toLowerCase().includes(debouncedSearchValue)))
+    },[countries ,debouncedSearchValue]);
+
+    const onSearchChange = e => setSearchValue(e.target.value.toLowerCase());
+
     return(
         <div>
             <h1>List of countries</h1>
-            <input type="text" onChange={e => setSearchValue(e.target.value)} value={searchValue} />
+            <input type="text" value={searchValue} onChange={onSearchChange} />
             <table className="table">
                 <thead>
                     <tr>
