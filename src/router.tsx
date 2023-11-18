@@ -1,8 +1,8 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import Holidays from './components/Holidays';
+import Holidays from './components/Pages/Holidays/Holidays';
 import App from './App';
-import Countries from './components/Countries';
+import Countries from './components/Pages/Countries/Countries';
 
 export const router = createBrowserRouter([
   {
