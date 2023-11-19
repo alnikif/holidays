@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import Header from '../../Header';
+import Header from '../../components/Header';
+import { HolidaysTable } from './HolidaysTable';
 
-type HolidayType = {
+export type HolidaysType = {
+  number: number;
   name: string;
   date: string;
-  weekday: Record<any, any>;
-  public: boolean;
+  weekday: { date?: { name: string } } | string;
+  isPublic: boolean;
 };
 
 const Holidays = () => {
@@ -26,33 +28,14 @@ const Holidays = () => {
 
     getHolidays();
   }, []);
+
   return (
     <div>
       <Header title="List of holidays" />
-      <table className="table">
-        <thead>
-          <tr>
-            <td>#</td>
-            <td>Name</td>
-            <td>Date</td>
-            <td>Weekday</td>
-            <td>Public</td>
-          </tr>
-        </thead>
-        <tbody>
-          {holidays.map((el: HolidayType, i) => {
-            return (
-              <tr key={el.name}>
-                <td>{i}</td>
-                <td>{el.name}</td>
-                <td>{el.date}</td>
-                <td>{el.weekday.date.name}</td>
-                <td>{el.public && 'public'}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      {holidays.map((el: HolidaysType, i) => {
+        const weekdayName = typeof el.weekday === 'object' && el.weekday?.date?.name ? el.weekday.date.name : 'N/A';
+        return <HolidaysTable key={el.name} number={i} name={el.name} date={el.date} weekday={weekdayName} isPublic={el.isPublic} />;
+      })}
     </div>
   );
 };

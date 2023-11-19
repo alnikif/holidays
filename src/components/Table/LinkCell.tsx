@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { CellWrapper } from './CellWrapper/CelllWrapper';
 
 type LinkCellProps = {
   readonly linkUrl: string;
@@ -7,8 +8,8 @@ type LinkCellProps = {
 
 export const LinkCell: React.FC<LinkCellProps> = ({ linkUrl }) => {
   return (
-    <div>
+    <CellWrapper>
       <Link to={`/holidays/${linkUrl}`}>View holiday list</Link>
-    </div>
+    </CellWrapper>
   );
 };

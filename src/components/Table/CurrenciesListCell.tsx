@@ -1,4 +1,5 @@
 import React from 'react';
+import { CellWrapper } from './CellWrapper/CelllWrapper';
 
 type CurrenciesListCellProps = {
   readonly currenciesListCell: Record<string, string>[];
@@ -6,10 +7,10 @@ type CurrenciesListCellProps = {
 
 export const CurrenciesListCell: React.FC<CurrenciesListCellProps> = ({ currenciesListCell }) => {
   return (
-    <div>
-      {currenciesListCell.map((el, i) => {
-        return <span key={el.alpha}>{el.alpha}</span>;
-      })}
-    </div>
+    <CellWrapper>
+      {currenciesListCell.map((el, i) => (
+        <span key={el.alpha}>{el.alpha}</span>
+      ))}
+    </CellWrapper>
   );
 };

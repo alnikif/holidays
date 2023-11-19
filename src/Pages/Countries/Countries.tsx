@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios, { AxiosResponse } from 'axios';
 import { Link } from 'react-router-dom';
-import useDebounce from '../../../hooks/useDebounce';
-import Header from '../../Header';
-import { Search } from '../../Search';
+import useDebounce from '../../hooks/useDebounce';
+import Header from '../../components/Header';
+import { Search } from '../../components/Search';
 import { CountriesTable } from './CountriesTable';
 
 export type CountryType = {
@@ -66,58 +66,5 @@ const Countries = (): React.JSX.Element => {
     </div>
   );
 };
-
-// <CountriesTable
-//   number="#"
-//   name="Country"
-//   flag="Flag"
-//   code="Code"
-//   currenciesListCell="Currencies"
-//   languagesListCell="Languages"
-//   holidays="Holidays"
-// />
-//     <table className="table">
-//       <thead>
-//         <tr>
-//           <th>#</th>
-//           <th>Country</th>
-//           <th>Flag</th>
-//           <th>Code</th>
-//           <td>Currencies</td>
-//           <th className="languagesColumn">Languages</th>
-//           <td>Holidays</td>
-//         </tr>
-//       </thead>
-//       <tbody>
-//         {searchCountries.map((el: CountryType, i) => {
-//           return (
-//             <tr key={el.code}>
-//               <td>{i}</td>
-//               <td>{el.name}</td>
-//               <td>
-//                 <img src={el.flag} alt="Flag" />
-//               </td>
-//               <td>{el.code}</td>
-//               <td>
-//                 {el.currencies.map((item: Record<string, string>, index: number) => {
-//                   return <span key={el.code}>{item.alpha}</span>;
-//                 })}
-//               </td>
-//               <td className="languagesColumn">
-//                 {el.languages.map((element: string) => {
-//                   console.log(el.languages);
-//                   return <span key={element}>{element} </span>;
-//                 })}
-//               </td>
-//               <td>
-//                 <Link to={`/holidays/${el.code}`}>View holiday list</Link>
-//               </td>
-//             </tr>
-//           );
-//         })}
-//       </tbody>
-//     </table>
-//   </div>
-// );
 
 export default Countries;
