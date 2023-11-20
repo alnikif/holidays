@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 
 type SearchPropsType = {
   readonly value: string;
-  readonly onChange: (e: { target: { value: string } }) => void;
+  readonly onChange: (nextValue: string) => void;
 };
 
 export const Search: React.FC<SearchPropsType> = ({ value, onChange }) => {
-  return <input type="text" value={value} onChange={onChange} />;
+  const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value);
+  return <input type="text" value={value} onChange={onChangeInput} />;
 };

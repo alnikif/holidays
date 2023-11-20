@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import axios from 'axios';
 import useDebounce from '../../hooks/useDebounce';
 import Header from '../../components/Header';
@@ -16,66 +16,48 @@ export type CountryType = {
   linkUrl: string;
 };
 
-type initialStateErrorType = {
-  show: boolean;
-  msg: string;
-};
-
-const Countries = (): React.JSX.Element => {
-  const [countries, setCountries] = useState([]);
+const Countries = () => {
+  const [countries, setCountries] = useState<CountryType[]>([]);
   const [searchValue, setSearchValue] = useState('');
-  const [searchCountries, setSearchCountries] = useState([]);
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
   const debouncedSearchValue = useDebounce(searchValue);
 
-  const [notification, setNotification] = useState<initialStateErrorType>({
-    show: false,
-    msg: '//'
-  });
-
-  const displayNotification = (msg: string) => {
-    setNotification({ show: true, msg });
-    setTimeout(() => {
-      setNotification({ show: false, msg: '' });
-    }, 4000);
-  };
-
   useEffect(() => {
-    const getCountries = async (): Promise<void> => {
-      try {
-        const response = await axios.get(`https://holidayapi.com/v1/countries?key=${process.env.REACT_APP_ACCESS_KEY}`);
+    axios
+      .get(`https://holidayapi.com/v1/countries?key=${process.env.REACT_APP_ACCESS_KEY}&search=${debouncedSearchValue}`)
+      .then((response) => {
         const {
           data: { countries: listCountries }
         } = response;
-
         setCountries(listCountries);
-        setSearchCountries(listCountries);
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          displayNotification(error.message);
+        setError(null);
+      })
+      .catch((apiError: unknown) => {
+        if (apiError instanceof Error) {
+          setError(apiError);
         }
-      }
-    };
-    getCountries();
-  }, []);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [debouncedSearchValue]);
 
-  useEffect(() => {
-    if (!countries.length) return;
-
-    setSearchCountries(countries.filter((el: CountryType) => el.name.toLowerCase().includes(debouncedSearchValue)));
-  }, [countries, debouncedSearchValue]);
-
-  const onSearchChange = (e: { target: { value: string } }) => setSearchValue(e.target.value.toLowerCase());
+  const onSearchChange = (nextSearchValue: string) => setSearchValue(nextSearchValue.toLowerCase());
 
   return (
     <div>
-      {notification.show && <NotificationError message={notification.msg} title="Notification" />}
+      <NotificationError title="Fetch countries error notification" message={error?.message} />
 
       <Header title="List of countries" />
       <Search value={searchValue} onChange={onSearchChange} />
-      {searchCountries.map((el: CountryType, i) => (
+
+      {countries.map((el, index) => (
         <CountriesTable
           key={el.name}
-          number={i + 1}
+          number={index + 1}
           name={el.name}
           flag={el.flag}
           code={el.code}
@@ -84,8 +66,10 @@ const Countries = (): React.JSX.Element => {
           linkUrl={el.code}
         />
       ))}
+
+      {loading && <div>Loading...</div>}
     </div>
   );
 };
 
-export default Countries;
+export default memo(Countries);
