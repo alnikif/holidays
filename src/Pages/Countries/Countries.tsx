@@ -42,7 +42,7 @@ const Countries = (): React.JSX.Element => {
   useEffect(() => {
     const getCountries = async (): Promise<void> => {
       try {
-        const response = await axios.get(`https://hlidayapi.com/v1/countries?key=${process.env.REACT_APP_ACCESS_KEY}`);
+        const response = await axios.get(`https://holidayapi.com/v1/countries?key=${process.env.REACT_APP_ACCESS_KEY}`);
         const {
           data: { countries: listCountries }
         } = response;

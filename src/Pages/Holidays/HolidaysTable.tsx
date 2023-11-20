@@ -5,12 +5,12 @@ import { HolidaysType } from './Holidays';
 import { DateCell } from '../../components/Table/DateCell';
 import { WeekdayCell } from '../../components/Table/WeekdayCell';
 import { PublicCell } from '../../components/Table/PublicCell';
-import './HolidaysTable.scss';
+import styles from './HolidaysTable.module.scss';
 
 export const HolidaysTable: React.FC<HolidaysType> = (props) => {
   const { number, name, date, weekday, isPublic } = props;
   return (
-    <div className="holidaysTableContainer">
+    <div className={styles.holidaysTableContainer}>
       <NumberCell number={number} />
       <NameCell name={name} />
       <DateCell date={date} />

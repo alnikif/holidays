@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './NotificationError.scss';
+import styles from './NotificationError.module.scss';
 
 type NotificationProps = {
   readonly message: string;
@@ -8,9 +8,9 @@ type NotificationProps = {
 
 export const NotificationError: React.FC<NotificationProps> = ({ message, title }) => {
   return (
-    <div className="notification__container">
+    <div className={styles.notification__container}>
       <p>{title}</p>
-      <p className="errorMsg">{message}</p>
+      <p className={styles.errorMsg}>{message}</p>
     </div>
   );
 };

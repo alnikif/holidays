@@ -6,12 +6,12 @@ import { ImageCell } from '../../components/Table/ImageCell';
 import { CodeCell } from '../../components/Table/CodeCell';
 import { CurrenciesListCell } from '../../components/Table/CurrenciesListCell';
 import { LinkCell } from '../../components/Table/LinkCell';
-import './CountriesTable.scss';
+import styles from './CountriesTable.module.scss';
 
 export const CountriesTable: React.FC<CountryType> = (props) => {
   const { number, name, code, flag, currencies, languages, linkUrl } = props;
   return (
-    <div className="countriesTableContainer">
+    <div className={styles.countriesTableContainer}>
       <NumberCell number={number} />
       <NameCell name={name} />
       <ImageCell flag={flag} />
