@@ -7,21 +7,29 @@ import { CurrenciesListCell } from './Cells/CurrenciesListCell';
 import { LanguagesListCell } from './Cells/LanguagesListCell';
 import { LinkCell } from './Cells/LinkCell';
 import styles from './Table.module.scss';
+import { HeaderRow } from './HeaderRow/HeaderRow';
 
 export type HeaderCellType = {
+  key: string;
   label: string;
   cellType: CellType;
 };
 
 export type BodyCellType = {
+  key: string;
   cellType: CellType;
   value: string | number | (string | number)[] | Record<string, string>[];
+};
+
+export type BodyRowType = {
+  key: string;
+  cells: BodyCellType[];
 };
 
 type TableProps = {
   readonly title: string;
   readonly headerRow: HeaderCellType[];
-  readonly bodyRows: BodyCellType[][];
+  readonly bodyRows: BodyRowType[];
 };
 
 export const Table: React.FC<TableProps> = (props) => {
@@ -29,16 +37,14 @@ export const Table: React.FC<TableProps> = (props) => {
 
   return (
     <div className={styles.countriesTableContainer}>
-      <div className={styles.headerRowContainer}>
-        {headerRow.map((headerCell) => (
-          <NameCell key={headerCell.label} name={headerCell.label} />
-        ))}
-      </div>
+      <div>{title}</div>
+
+      <HeaderRow headerRow={headerRow} />
+
       <div className={styles.tableBodyContainer}>
         {bodyRows.map((bodyRow, index) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <div key={String(index)} className={styles.bodyRowContainer}>
-            {bodyRow.map((bodyCell) => {
+          <div key={bodyRow.key} className={styles.bodyRowContainer}>
+            {bodyRow.cells.map((bodyCell) => {
               switch (bodyCell.cellType) {
                 case CellType.name:
                   return <NameCell key={String(bodyCell.value)} name={bodyCell.value as string} />;

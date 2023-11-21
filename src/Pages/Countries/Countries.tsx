@@ -5,7 +5,7 @@ import Header from '../../components/Header';
 import { Search } from '../../components/Search';
 import { NotificationError } from '../../components/NotificationError/NotificationError';
 import { CellType } from '../../components/Table/CellType';
-import { BodyCellType, Table } from '../../components/Table/Table';
+import { BodyCellType, BodyRowType, Table } from '../../components/Table/Table';
 
 export type CountryType = {
   name: string;
@@ -17,11 +17,12 @@ export type CountryType = {
 };
 
 const headerRowConfig = [
-  { label: 'Country Name', cellType: CellType.name },
-  { label: 'Flag', cellType: CellType.flag },
-  { label: 'Code', cellType: CellType.code },
-  { label: 'Currencies', cellType: CellType.currencies },
-  { label: 'Languages', cellType: CellType.languages }
+  { key: 'CountryName', label: 'Country Name', cellType: CellType.name },
+  { key: 'Flag', label: 'Flag', cellType: CellType.flag },
+  { key: 'Code', label: 'Code', cellType: CellType.code },
+  { key: 'Currencies', label: 'Currencies', cellType: CellType.currencies },
+  { key: 'Languages', label: 'Languages', cellType: CellType.languages },
+  { key: 'Link', label: 'Link', cellType: CellType.link }
 ];
 
 const Countries = () => {
@@ -33,20 +34,22 @@ const Countries = () => {
 
   const debouncedSearchValue = useDebounce(searchValue);
 
-  const bodyRowsConfig = countries.reduce((acc: BodyCellType[][], country) => {
+  const bodyRowsConfig = countries.reduce((acc: BodyRowType[], country) => {
     const { name, code, currencies, flag, languages } = country;
 
-    const rowConfig = [
-      { cellType: CellType.name, value: name },
-      { cellType: CellType.flag, value: flag },
-      { cellType: CellType.code, value: code },
-      { cellType: CellType.currencies, value: currencies },
-      { cellType: CellType.languages, value: languages },
-      { cellType: CellType.link, value: code }
+    const bodyRowCells = [
+      { key: `${name}/CountryName`, cellType: CellType.name, value: name },
+      { key: `${name}/Flag`, cellType: CellType.flag, value: flag },
+      { key: `${name}/Code`, cellType: CellType.code, value: code },
+      { key: `${name}/Currencies`, cellType: CellType.currencies, value: currencies },
+      { key: `${name}/Languages`, cellType: CellType.languages, value: languages },
+      { key: `${name}/Link`, cellType: CellType.link, value: code }
     ];
 
-    return [...acc, rowConfig];
-  }, [] as BodyCellType[][]);
+    const bodyRow = { key: name, cells: bodyRowCells };
+
+    return [...acc, bodyRow];
+  }, [] as BodyRowType[]);
 
   useEffect(() => {
     axios
