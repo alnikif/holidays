@@ -3,10 +3,9 @@ import axios from 'axios';
 import useDebounce from '../../hooks/useDebounce';
 import Header from '../../components/Header';
 import { Search } from '../../components/Search';
-import { CountriesTable } from './CountriesTable';
 import { NotificationError } from '../../components/NotificationError/NotificationError';
 import { CellType } from '../../components/Table/CellType';
-import { BodyCellType } from '../../components/Table/Table';
+import { BodyCellType, Table } from '../../components/Table/Table';
 
 export type CountryType = {
   name: string;
@@ -78,17 +77,7 @@ const Countries = () => {
       <Header title="List of countries" />
       <Search value={searchValue} onChange={onSearchChange} />
 
-      {countries.map((el, index) => (
-        <CountriesTable
-          key={el.name}
-          number={index + 1}
-          name={el.name}
-          flag={el.flag}
-          code={el.code}
-          currencies={el.currencies}
-          languages={el.languages}
-        />
-      ))}
+      <Table title="Countries" headerRow={headerRowConfig} bodyRows={bodyRowsConfig} />
 
       {loading && <div>Loading...</div>}
     </div>

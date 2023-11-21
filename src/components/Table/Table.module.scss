@@ -1,0 +1,24 @@
+.countriesTableContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.headerRowContainer{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.tableBodyContainer{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  //justify-content: space-between;
+}
+.bodyRowContainer{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  //justify-content: space-between;
+}
