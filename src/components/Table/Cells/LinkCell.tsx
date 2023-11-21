@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { CellWrapper } from './CellWrapper/CelllWrapper';
+import { CellWrapper } from '../CellWrapper/CelllWrapper';
 
 type LinkCellProps = {
   readonly linkUrl: string;

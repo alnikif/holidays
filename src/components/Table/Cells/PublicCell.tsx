@@ -1,5 +1,5 @@
 import React from 'react';
-import { CellWrapper } from './CellWrapper/CelllWrapper';
+import { CellWrapper } from '../CellWrapper/CelllWrapper';
 
 export type PublicCellProps = {
   readonly isPublic: boolean;

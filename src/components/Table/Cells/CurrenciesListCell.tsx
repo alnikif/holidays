@@ -1,5 +1,5 @@
 import React from 'react';
-import { CellWrapper } from './CellWrapper/CelllWrapper';
+import { CellWrapper } from '../CellWrapper/CelllWrapper';
 
 type CurrenciesListCellProps = {
   readonly currenciesListCell: Record<string, string>[];

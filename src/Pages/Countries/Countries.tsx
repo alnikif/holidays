@@ -5,6 +5,8 @@ import Header from '../../components/Header';
 import { Search } from '../../components/Search';
 import { CountriesTable } from './CountriesTable';
 import { NotificationError } from '../../components/NotificationError/NotificationError';
+import { CellType } from '../../components/Table/CellType';
+import { BodyCellType } from '../../components/Table/Table';
 
 export type CountryType = {
   name: string;
@@ -13,24 +15,15 @@ export type CountryType = {
   currencies: Record<string, string>[];
   languages: string[];
   number: string | number;
-  linkUrl: string;
 };
 
-///////////////////////////////
-enum CellType {
-  name = 'name',
-  flag = 'flag',
-  link = 'link',
-  code = 'code',
-  currencies = 'currencies',
-  languages = 'languages'
-}
-
-type BodyConfigType = {
-  cellType: CellType;
-  value: string | number;
-}[];
-////////////////////////////////
+const headerRowConfig = [
+  { label: 'Country Name', cellType: CellType.name },
+  { label: 'Flag', cellType: CellType.flag },
+  { label: 'Code', cellType: CellType.code },
+  { label: 'Currencies', cellType: CellType.currencies },
+  { label: 'Languages', cellType: CellType.languages }
+];
 
 const Countries = () => {
   const [countries, setCountries] = useState<CountryType[]>([]);
@@ -41,18 +34,8 @@ const Countries = () => {
 
   const debouncedSearchValue = useDebounce(searchValue);
 
-  ////////////////////////////////////////////////////////////////
-
-  const headerRowConfig = [
-    { label: 'Country Name', cellType: CellType.name },
-    { label: 'Flag', cellType: CellType.flag },
-    { label: 'Code', cellType: CellType.code },
-    { label: 'Currencies', cellType: CellType.currencies },
-    { label: 'Languages', cellType: CellType.languages }
-  ];
-
-  const bodyRowsConfig = countries.reduce((acc: CountryType[], country) => {
-    const { name, code, currencies, flag, languages, linkUrl } = country;
+  const bodyRowsConfig = countries.reduce((acc: BodyCellType[][], country) => {
+    const { name, code, currencies, flag, languages } = country;
 
     const rowConfig = [
       { cellType: CellType.name, value: name },
@@ -60,13 +43,11 @@ const Countries = () => {
       { cellType: CellType.code, value: code },
       { cellType: CellType.currencies, value: currencies },
       { cellType: CellType.languages, value: languages },
-      { cellType: CellType.link, value: linkUrl }
+      { cellType: CellType.link, value: code }
     ];
 
     return [...acc, rowConfig];
-  }, []);
-
-  ////////////////////////////////////////////////////////////////
+  }, [] as BodyCellType[][]);
 
   useEffect(() => {
     axios
@@ -106,7 +87,6 @@ const Countries = () => {
           code={el.code}
           currencies={el.currencies}
           languages={el.languages}
-          linkUrl={el.code}
         />
       ))}
 
