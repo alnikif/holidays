@@ -2,7 +2,7 @@ import React from 'react';
 import { CellType } from './CellType';
 import styles from './Table.module.scss';
 import { HeaderRow } from './HeaderRow/HeaderRow';
-import { BodyRows } from './BodyCountriesRow/BodyCountriesRow';
+import { BodyRows } from './BodyRow/BodyRows';
 
 export type HeaderCellType = {
   key: string;
