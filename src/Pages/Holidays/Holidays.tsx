@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../../components/Header';
 import { HolidaysTable } from './HolidaysTable';
+import { CellType } from '../../components/Table/CellType';
 
 export type HolidaysType = {
   number: number;
@@ -11,6 +12,13 @@ export type HolidaysType = {
   weekday: { date?: { name: string } } | string;
   isPublic: boolean;
 };
+
+const headerHolidayRowConfig = [
+  { key: 'Holiday name', label: 'Holiday name', cellType: CellType.name },
+  { key: 'Date', label: 'Date', cellType: CellType.date },
+  { key: 'Weekday', label: 'Weekday', cellType: CellType.weekday },
+  { key: 'Public', label: 'Public', cellType: CellType.public }
+];
 
 const Holidays = () => {
   const [holidays, setHolidays] = useState([]);

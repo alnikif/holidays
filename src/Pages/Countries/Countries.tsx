@@ -16,7 +16,7 @@ export type CountryType = {
   number: string | number;
 };
 
-const headerRowConfig = [
+const headerCountriesRowConfig = [
   { key: 'CountryName', label: 'Country Name', cellType: CellType.name },
   { key: 'Flag', label: 'Flag', cellType: CellType.flag },
   { key: 'Code', label: 'Code', cellType: CellType.code },
@@ -37,7 +37,7 @@ const Countries = () => {
   const bodyRowsConfig = countries.reduce((acc: BodyRowType[], country) => {
     const { name, code, currencies, flag, languages } = country;
 
-    const bodyRowCells = [
+    const bodyCountriesRowCells = [
       { key: `${name}/CountryName`, cellType: CellType.name, value: name },
       { key: `${name}/Flag`, cellType: CellType.flag, value: flag },
       { key: `${name}/Code`, cellType: CellType.code, value: code },
@@ -46,7 +46,7 @@ const Countries = () => {
       { key: `${name}/Link`, cellType: CellType.link, value: code }
     ];
 
-    const bodyRow = { key: name, cells: bodyRowCells };
+    const bodyRow = { key: name, cells: bodyCountriesRowCells };
 
     return [...acc, bodyRow];
   }, [] as BodyRowType[]);
@@ -80,7 +80,7 @@ const Countries = () => {
       <Header title="List of countries" />
       <Search value={searchValue} onChange={onSearchChange} />
 
-      <Table title="Countries" headerRow={headerRowConfig} bodyRows={bodyRowsConfig} />
+      <Table title="Countries" headerRow={headerCountriesRowConfig} bodyRows={bodyRowsConfig} />
 
       {loading && <div>Loading...</div>}
     </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { NameCell } from '../Cells/NameCell';
 import { HeaderCellType } from '../Table';
-import styles from './HeaderRow.module.scss';
+import styles from './HeaderCountriesRow.module.scss';
 
 type HeaderRowCellType = {
   readonly headerRow: HeaderCellType[];

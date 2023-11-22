@@ -1,8 +1,12 @@
 export enum CellType {
+  number = 'number',
   name = 'name',
   flag = 'flag',
   link = 'link',
   code = 'code',
   currencies = 'currencies',
-  languages = 'languages'
+  languages = 'languages',
+  date = 'date',
+  weekday = 'weekday',
+  public = 'public'
 }
