@@ -5,6 +5,7 @@ import { CellType } from '../../components/Table/CellType';
 import { BodyRowType, Table } from '../../components/Table/Table';
 import { Search } from '../../components/Search';
 import useDebounce from '../../hooks/useDebounce';
+import { NotificationError } from '../../components/NotificationError/NotificationError';
 
 export type HolidaysType = {
   number: number;
@@ -25,26 +26,39 @@ const Holidays = () => {
   const [holidays, setHolidays] = useState([]);
   const { countryId } = useParams();
   const [searchValue, setSearchValue] = useState('');
+  const [error, setError] = useState<Error | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const debouncedSearchValue = useDebounce(searchValue);
 
   useEffect(() => {
-    const getHolidays = async () => {
-      try {
-        const response = await axios.get(
+    const getHolidays = () => {
+      axios
+        .get(
           `https://holidayapi.com/v1/holidays?country=${countryId}&year=2022&key=${process.env.REACT_APP_ACCESS_KEY}&search=${debouncedSearchValue}`
-        );
-        setHolidays(response.data.holidays);
-      } catch (error) {
-        console.log(error);
-      }
+        )
+        .then((response) => {
+          const {
+            data: { holidays: listHolidays }
+          } = response;
+          setHolidays(listHolidays);
+          setError(null);
+        })
+        .catch((apiError: unknown) => {
+          if (apiError instanceof Error) {
+            setError(apiError);
+          }
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     };
 
     getHolidays();
   }, [debouncedSearchValue]);
 
-  const bodyRowsConfig = holidays.reduce((acc: BodyRowType[], country) => {
-    const { name, date, weekday, flag, public: isPublic } = country;
+  const bodyRowsConfig = holidays.reduce((acc: BodyRowType[], holiday) => {
+    const { name, date, weekday, flag, public: isPublic } = holiday;
 
     const bodyCountriesRowCells = [
       { key: `${name}/CountryName`, cellType: CellType.name, value: name },
@@ -62,8 +76,11 @@ const Holidays = () => {
 
   return (
     <div>
+      <NotificationError title="Fetch countries error notification" message={error?.message} />
+
       <Search value={searchValue} onChange={onSearchChange} />
       <Table title="Holidays" headerRow={headerRowConfig} bodyRows={bodyRowsConfig} />
+      {loading && <div>Loading...</div>}
     </div>
   );
 };
