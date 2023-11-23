@@ -67,7 +67,7 @@ export const BodyRows: React.FC<BodyRowCellType> = (props) => {
         };
 
         return (
-          <CellWrapper key={String(bodyCell.value)} width={width}>
+          <CellWrapper key={String(bodyCell.key)} width={width}>
             {cellContent()}
           </CellWrapper>
         );

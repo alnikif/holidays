@@ -1,12 +1,14 @@
 import React, { memo, useEffect, useState } from 'react';
 import axios from 'axios';
+import { useSearchParams } from 'react-router-dom';
+
 import useDebounce from '../../hooks/useDebounce';
 import Header from '../../components/Header';
 import { Search } from '../../components/Search';
 import { NotificationError } from '../../components/NotificationError/NotificationError';
 import { CellType } from '../../components/Table/CellType';
 import { Table } from '../../components/Table/Table';
-import { BodyCellType, BodyRowType } from '../../components/Table/BodyRow/BodyRows';
+import { BodyRowType } from '../../components/Table/BodyRow/BodyRows';
 
 export type CountryType = {
   name: string;
@@ -27,9 +29,13 @@ const headerCountriesRowConfig = [
   { key: 'link', label: 'Link', cellType: CellType.link, width: 200 }
 ];
 
+const SEARCH_QUERY = 'country';
+
 const Countries = () => {
+  const [queryParams, setQueryParams] = useSearchParams();
+
   const [countries, setCountries] = useState<CountryType[]>([]);
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState(queryParams.get(SEARCH_QUERY) || '');
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
@@ -38,21 +44,26 @@ const Countries = () => {
 
   const bodyRowsConfig = countries.reduce((acc, country, index) => {
     const { name, code, currencies, flag, languages } = country;
+    const keyPrefix = `${code}/${name}`;
 
     const bodyCountriesRowCells = [
-      { key: `${name}/index`, columnKey: 'index', cellType: CellType.index, value: index + 1 },
-      { key: `${name}/name`, columnKey: 'name', cellType: CellType.name, value: name },
-      { key: `${name}/flag`, columnKey: 'flag', cellType: CellType.flag, value: flag },
-      { key: `${name}/code`, columnKey: 'code', cellType: CellType.code, value: code },
-      { key: `${name}/currencies`, columnKey: 'currencies', cellType: CellType.currencies, value: currencies },
-      { key: `${name}/languages`, columnKey: 'languages', cellType: CellType.languages, value: languages },
-      { key: `${name}/link`, columnKey: 'link', cellType: CellType.link, value: code }
+      { key: `${keyPrefix}/index`, columnKey: 'index', cellType: CellType.index, value: index + 1 },
+      { key: `${keyPrefix}/name`, columnKey: 'name', cellType: CellType.name, value: name },
+      { key: `${keyPrefix}/flag`, columnKey: 'flag', cellType: CellType.flag, value: flag },
+      { key: `${keyPrefix}/code`, columnKey: 'code', cellType: CellType.code, value: code },
+      { key: `${keyPrefix}/currencies`, columnKey: 'currencies', cellType: CellType.currencies, value: currencies },
+      { key: `${keyPrefix}/languages`, columnKey: 'languages', cellType: CellType.languages, value: languages },
+      { key: `${keyPrefix}/link`, columnKey: 'link', cellType: CellType.link, value: code }
     ];
 
-    const bodyRow = { key: name, cells: bodyCountriesRowCells };
+    const bodyRow = { key: keyPrefix, cells: bodyCountriesRowCells };
 
     return [...acc, bodyRow];
   }, [] as BodyRowType[]);
+
+  useEffect(() => {
+    setQueryParams({ ...queryParams, [SEARCH_QUERY]: debouncedSearchValue });
+  }, [debouncedSearchValue]);
 
   useEffect(() => {
     axios
