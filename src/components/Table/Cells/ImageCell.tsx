@@ -1,5 +1,4 @@
 import React from 'react';
-import { CellWrapper } from '../CellWrapper/CelllWrapper';
 
 type ImageCellProps = {
   readonly flag: string;
@@ -7,8 +6,8 @@ type ImageCellProps = {
 
 export const ImageCell: React.FC<ImageCellProps> = ({ flag: imageFlagUrl }) => {
   return (
-    <CellWrapper>
+    <div>
       <img src={imageFlagUrl} alt="Flag" />
-    </CellWrapper>
+    </div>
   );
 };

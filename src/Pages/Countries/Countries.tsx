@@ -5,7 +5,8 @@ import Header from '../../components/Header';
 import { Search } from '../../components/Search';
 import { NotificationError } from '../../components/NotificationError/NotificationError';
 import { CellType } from '../../components/Table/CellType';
-import { BodyCellType, BodyRowType, Table } from '../../components/Table/Table';
+import { Table } from '../../components/Table/Table';
+import { BodyCellType, BodyRowType } from '../../components/Table/BodyRow/BodyRows';
 
 export type CountryType = {
   name: string;
@@ -17,12 +18,13 @@ export type CountryType = {
 };
 
 const headerCountriesRowConfig = [
-  { key: 'CountryName', label: 'Country Name', cellType: CellType.name },
-  { key: 'Flag', label: 'Flag', cellType: CellType.flag },
-  { key: 'Code', label: 'Code', cellType: CellType.code },
-  { key: 'Currencies', label: 'Currencies', cellType: CellType.currencies },
-  { key: 'Languages', label: 'Languages', cellType: CellType.languages },
-  { key: 'Link', label: 'Link', cellType: CellType.link }
+  { key: 'index', label: '#', cellType: CellType.index, width: 50 },
+  { key: 'name', label: 'Country Name', cellType: CellType.name, width: 400 },
+  { key: 'flag', label: 'Flag', cellType: CellType.flag, width: 200 },
+  { key: 'code', label: 'Code', cellType: CellType.code, width: 200 },
+  { key: 'currencies', label: 'Currencies', cellType: CellType.currencies, width: 200 },
+  { key: 'languages', label: 'Languages', cellType: CellType.languages, width: 200 },
+  { key: 'link', label: 'Link', cellType: CellType.link, width: 200 }
 ];
 
 const Countries = () => {
@@ -34,16 +36,17 @@ const Countries = () => {
 
   const debouncedSearchValue = useDebounce(searchValue);
 
-  const bodyRowsConfig = countries.reduce((acc: BodyRowType[], country) => {
+  const bodyRowsConfig = countries.reduce((acc, country, index) => {
     const { name, code, currencies, flag, languages } = country;
 
     const bodyCountriesRowCells = [
-      { key: `${name}/CountryName`, cellType: CellType.name, value: name },
-      { key: `${name}/Flag`, cellType: CellType.flag, value: flag },
-      { key: `${name}/Code`, cellType: CellType.code, value: code },
-      { key: `${name}/Currencies`, cellType: CellType.currencies, value: currencies },
-      { key: `${name}/Languages`, cellType: CellType.languages, value: languages },
-      { key: `${name}/Link`, cellType: CellType.link, value: code }
+      { key: `${name}/index`, columnKey: 'index', cellType: CellType.index, value: index + 1 },
+      { key: `${name}/name`, columnKey: 'name', cellType: CellType.name, value: name },
+      { key: `${name}/flag`, columnKey: 'flag', cellType: CellType.flag, value: flag },
+      { key: `${name}/code`, columnKey: 'code', cellType: CellType.code, value: code },
+      { key: `${name}/currencies`, columnKey: 'currencies', cellType: CellType.currencies, value: currencies },
+      { key: `${name}/languages`, columnKey: 'languages', cellType: CellType.languages, value: languages },
+      { key: `${name}/link`, columnKey: 'link', cellType: CellType.link, value: code }
     ];
 
     const bodyRow = { key: name, cells: bodyCountriesRowCells };

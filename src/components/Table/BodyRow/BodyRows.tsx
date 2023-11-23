@@ -6,43 +6,71 @@ import { CodeCell } from '../Cells/CodeCell';
 import { CurrenciesListCell } from '../Cells/CurrenciesListCell';
 import { LanguagesListCell } from '../Cells/LanguagesListCell';
 import { LinkCell } from '../Cells/LinkCell';
-import { BodyCellType, BodyRowType } from '../Table';
 import styles from './BodyRow.module.scss';
 import { DateCell } from '../Cells/DateCell';
 import { WeekdayCell } from '../Cells/WeekdayCell';
 import { PublicCell } from '../Cells/PublicCell';
+import { CellWrapper } from '../CellWrapper/CelllWrapper';
+import { HeaderCellType } from '../HeaderRow/HeaderRow';
+
+export type BodyCellType = {
+  key: string;
+  columnKey: string;
+  cellType: CellType;
+  value: unknown;
+};
+
+export type BodyRowType = {
+  key: string;
+  cells: BodyCellType[];
+};
+
+export type ColumnDetailsType = Record<string, HeaderCellType>;
 
 type BodyRowCellType = {
   readonly bodyRow: BodyRowType;
+  readonly columnDetailsMap: ColumnDetailsType;
 };
+
 export const BodyRows: React.FC<BodyRowCellType> = (props) => {
-  const { bodyRow } = props;
+  const { bodyRow, columnDetailsMap } = props;
 
   return (
     <div className={styles.bodyRowContainer}>
       {bodyRow.cells.map((bodyCell: BodyCellType) => {
-        switch (bodyCell.cellType) {
-          case CellType.name:
-            return <NameCell key={String(bodyCell.value)} name={bodyCell.value as string} />;
-          case CellType.flag:
-            return <ImageCell key={String(bodyCell.value)} flag={bodyCell.value as string} />;
-          case CellType.code:
-            return <CodeCell key={String(bodyCell.value)} code={bodyCell.value as string} />;
-          case CellType.currencies:
-            return <CurrenciesListCell key={bodyCell.cellType} currenciesListCell={bodyCell.value as Record<string, string>[]} />;
-          case CellType.languages:
-            return <LanguagesListCell key={bodyCell.cellType} languagesListCell={bodyCell.value as string[]} />;
-          case CellType.link:
-            return <LinkCell key={String(bodyCell.value)} linkUrl={bodyCell.value as string} />;
-          case CellType.date:
-            return <DateCell key={String(bodyCell.value)} date={bodyCell.value as string} />;
-          case CellType.weekday:
-            return <WeekdayCell key={String(bodyCell.value)} weekday={bodyCell.value as string} />;
-          case CellType.public:
-            return <PublicCell key={String(bodyCell.value)} isPublic={bodyCell.value as string} />;
-          default:
-            null;
-        }
+        const { width } = columnDetailsMap[bodyCell.columnKey];
+        const cellContent = () => {
+          switch (bodyCell.cellType) {
+            case CellType.index:
+              return String(bodyCell.value);
+            case CellType.name:
+              return <NameCell name={bodyCell.value as string} />;
+            case CellType.flag:
+              return <ImageCell flag={bodyCell.value as string} />;
+            case CellType.code:
+              return <CodeCell code={bodyCell.value as string} />;
+            case CellType.currencies:
+              return <CurrenciesListCell currenciesListCell={bodyCell.value as Record<string, string>[]} />;
+            case CellType.languages:
+              return <LanguagesListCell languagesListCell={bodyCell.value as string[]} />;
+            case CellType.link:
+              return <LinkCell linkUrl={bodyCell.value as string} />;
+            case CellType.date:
+              return <DateCell date={bodyCell.value as string} />;
+            case CellType.weekday:
+              return <WeekdayCell weekday={bodyCell.value as string} />;
+            case CellType.public:
+              return <PublicCell isPublic={bodyCell.value as boolean} />;
+            default:
+              null;
+          }
+        };
+
+        return (
+          <CellWrapper key={String(bodyCell.value)} width={width}>
+            {cellContent()}
+          </CellWrapper>
+        );
       })}
     </div>
   );

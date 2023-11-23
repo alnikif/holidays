@@ -1,4 +1,5 @@
 export enum CellType {
+  index = 'index',
   number = 'number',
   name = 'name',
   flag = 'flag',

@@ -2,28 +2,30 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { CellType } from '../../components/Table/CellType';
-import { BodyRowType, Table } from '../../components/Table/Table';
+import { Table } from '../../components/Table/Table';
 import { Search } from '../../components/Search';
 import useDebounce from '../../hooks/useDebounce';
 import { NotificationError } from '../../components/NotificationError/NotificationError';
+import { BodyRowType } from '../../components/Table/BodyRow/BodyRows';
 
-export type HolidaysType = {
+export type HolidayType = {
   number: number;
   name: string;
   date: string;
-  weekday: { date?: { name: string } } | string;
-  isPublic: string;
+  weekday: { date: { name: string } };
+  public: boolean;
 };
 
 const headerRowConfig = [
-  { key: 'Holiday name', label: 'Holiday name', cellType: CellType.name },
-  { key: 'Date', label: 'Date', cellType: CellType.date },
-  { key: 'Weekday', label: 'Weekday', cellType: CellType.weekday },
-  { key: 'Public', label: 'Public', cellType: CellType.public }
+  { key: 'index', label: '#', cellType: CellType.index, width: 50 },
+  { key: 'name', label: 'Holiday name', cellType: CellType.name, width: 400 },
+  { key: 'date', label: 'Date', cellType: CellType.date, width: 150 },
+  { key: 'weekday', label: 'Weekday', cellType: CellType.weekday, width: 150 },
+  { key: 'public', label: 'Public', cellType: CellType.public, width: 150 }
 ];
 
 const Holidays = () => {
-  const [holidays, setHolidays] = useState([]);
+  const [holidays, setHolidays] = useState<HolidayType[]>([]);
   const { countryId } = useParams();
   const [searchValue, setSearchValue] = useState('');
   const [error, setError] = useState<Error | null>(null);
@@ -57,17 +59,18 @@ const Holidays = () => {
     getHolidays();
   }, [debouncedSearchValue]);
 
-  const bodyRowsConfig = holidays.reduce((acc: BodyRowType[], holiday) => {
-    const { name, date, weekday, flag, public: isPublic } = holiday;
+  const bodyRowsConfig = holidays.reduce((acc, holiday, index) => {
+    const { name, date, weekday, public: isPublic } = holiday;
 
     const bodyCountriesRowCells = [
-      { key: `${name}/CountryName`, cellType: CellType.name, value: name },
-      { key: `${name}/Date`, cellType: CellType.date, value: date },
-      { key: `${name}/Weekday`, cellType: CellType.weekday, value: weekday },
-      { key: `${name}/Public`, cellType: CellType.public, value: isPublic }
+      { key: `${name}/index`, columnKey: 'index', cellType: CellType.index, value: index + 1 },
+      { key: `${name}/name`, columnKey: 'name', cellType: CellType.name, value: name },
+      { key: `${name}/date`, columnKey: 'date', cellType: CellType.date, value: date },
+      { key: `${name}/weekday`, columnKey: 'weekday', cellType: CellType.weekday, value: weekday },
+      { key: `${name}/isPublic`, columnKey: 'public', cellType: CellType.public, value: isPublic }
     ];
 
-    const bodyRow = { key: name, cells: bodyCountriesRowCells };
+    const bodyRow: BodyRowType = { key: name, cells: bodyCountriesRowCells };
 
     return [...acc, bodyRow];
   }, [] as BodyRowType[]);
