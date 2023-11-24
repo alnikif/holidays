@@ -16,7 +16,7 @@ export const Table: React.FC<TableProps> = (props) => {
 
   return (
     <div className={styles.countriesTableContainer}>
-      <div>{title}</div>
+      <h1>{title}</h1>
       <HeaderRow headerRow={headerRow} />
 
       <div>

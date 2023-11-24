@@ -91,10 +91,9 @@ const Countries = () => {
     <div>
       <NotificationError title="Fetch countries error notification" message={error?.message} />
 
-      <Header title="List of countries" />
       <Search value={searchValue} onChange={onSearchChange} />
 
-      <Table title="Countries" headerRow={headerCountriesRowConfig} bodyRows={bodyRowsConfig} />
+      <Table title="List of countries" headerRow={headerCountriesRowConfig} bodyRows={bodyRowsConfig} />
 
       {loading && <div>Loading...</div>}
     </div>

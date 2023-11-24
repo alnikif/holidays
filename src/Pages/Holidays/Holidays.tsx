@@ -82,7 +82,7 @@ const Holidays = () => {
       <NotificationError title="Fetch countries error notification" message={error?.message} />
 
       <Search value={searchValue} onChange={onSearchChange} />
-      <Table title="Holidays" headerRow={headerRowConfig} bodyRows={bodyRowsConfig} />
+      <Table title="List of holidays" headerRow={headerRowConfig} bodyRows={bodyRowsConfig} />
       {loading && <div>Loading...</div>}
     </div>
   );
