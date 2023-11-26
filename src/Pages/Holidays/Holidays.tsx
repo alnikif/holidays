@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { CellType } from '../../components/Table/CellType';
 import { Table } from '../../components/Table/Table';
-import { Search } from '../../components/Search';
+import { Search } from '../../components/Search/Search';
 import useDebounce from '../../hooks/useDebounce';
 import { NotificationError } from '../../components/NotificationError/NotificationError';
 import { BodyRowType } from '../../components/Table/BodyRows/BodyRows';
@@ -81,7 +81,7 @@ const Holidays = () => {
     <div>
       <NotificationError title="Fetch countries error notification" message={error?.message} />
 
-      <Search value={searchValue} onChange={onSearchChange} />
+      <Search value={searchValue} title="Search holiday" onChange={onSearchChange} />
       <Table title="List of holidays" headerRow={headerRowConfig} bodyRows={bodyRowsConfig} />
       {loading && <div>Loading...</div>}
     </div>

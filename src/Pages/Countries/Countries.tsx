@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 
 import useDebounce from '../../hooks/useDebounce';
 import Header from '../../components/Header';
-import { Search } from '../../components/Search';
+import { Search } from '../../components/Search/Search';
 import { NotificationError } from '../../components/NotificationError/NotificationError';
 import { CellType } from '../../components/Table/CellType';
 import { Table } from '../../components/Table/Table';
@@ -91,7 +91,7 @@ const Countries = () => {
     <div>
       <NotificationError title="Fetch countries error notification" message={error?.message} />
 
-      <Search value={searchValue} onChange={onSearchChange} />
+      <Search value={searchValue} title="Search country" onChange={onSearchChange} />
 
       <Table title="List of countries" headerRow={headerCountriesRowConfig} bodyRows={bodyRowsConfig} />
 
