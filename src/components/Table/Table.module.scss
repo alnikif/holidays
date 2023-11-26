@@ -1,6 +1,11 @@
-.countriesTableContainer {
+.tableContainer {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
 
+.tableWrapper {
+  display: grid;
+  justify-content: center;
+}

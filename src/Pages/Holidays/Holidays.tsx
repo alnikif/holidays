@@ -6,7 +6,7 @@ import { Table } from '../../components/Table/Table';
 import { Search } from '../../components/Search';
 import useDebounce from '../../hooks/useDebounce';
 import { NotificationError } from '../../components/NotificationError/NotificationError';
-import { BodyRowType } from '../../components/Table/BodyRow/BodyRows';
+import { BodyRowType } from '../../components/Table/BodyRows/BodyRows';
 
 export type HolidayType = {
   number: number;

@@ -8,7 +8,7 @@ import { Search } from '../../components/Search';
 import { NotificationError } from '../../components/NotificationError/NotificationError';
 import { CellType } from '../../components/Table/CellType';
 import { Table } from '../../components/Table/Table';
-import { BodyRowType } from '../../components/Table/BodyRow/BodyRows';
+import { BodyRowType } from '../../components/Table/BodyRows/BodyRows';
 
 export type CountryType = {
   name: string;
@@ -20,13 +20,13 @@ export type CountryType = {
 };
 
 const headerCountriesRowConfig = [
-  { key: 'index', label: '#', cellType: CellType.index, width: 50 },
-  { key: 'name', label: 'Country Name', cellType: CellType.name, width: 400 },
-  { key: 'flag', label: 'Flag', cellType: CellType.flag, width: 200 },
-  { key: 'code', label: 'Code', cellType: CellType.code, width: 200 },
-  { key: 'currencies', label: 'Currencies', cellType: CellType.currencies, width: 200 },
-  { key: 'languages', label: 'Languages', cellType: CellType.languages, width: 200 },
-  { key: 'link', label: 'Link', cellType: CellType.link, width: 200 }
+  { key: 'index', label: '#', cellType: CellType.index, width: 1 },
+  { key: 'name', label: 'Country Name', cellType: CellType.name, width: 3 },
+  { key: 'flag', label: 'Flag', cellType: CellType.flag, width: 1 },
+  { key: 'code', label: 'Code', cellType: CellType.code, width: 1 },
+  { key: 'currencies', label: 'Currencies', cellType: CellType.currencies, width: 2 },
+  { key: 'languages', label: 'Languages', cellType: CellType.languages, width: 2 },
+  { key: 'link', label: 'Link', cellType: CellType.link, width: 3 }
 ];
 
 const SEARCH_QUERY = 'country';

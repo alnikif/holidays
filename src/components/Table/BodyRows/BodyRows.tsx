@@ -6,12 +6,10 @@ import { CodeCell } from '../Cells/CodeCell';
 import { CurrenciesListCell } from '../Cells/CurrenciesListCell';
 import { LanguagesListCell } from '../Cells/LanguagesListCell';
 import { LinkCell } from '../Cells/LinkCell';
-import styles from './BodyRow.module.scss';
 import { DateCell } from '../Cells/DateCell';
 import { WeekdayCell } from '../Cells/WeekdayCell';
 import { PublicCell } from '../Cells/PublicCell';
 import { CellWrapper } from '../CellWrapper/CelllWrapper';
-import { HeaderCellType } from '../HeaderRow/HeaderRow';
 
 export type BodyCellType = {
   key: string;
@@ -25,20 +23,16 @@ export type BodyRowType = {
   cells: BodyCellType[];
 };
 
-export type ColumnDetailsType = Record<string, HeaderCellType>;
-
 type BodyRowCellType = {
   readonly bodyRow: BodyRowType;
-  readonly columnDetailsMap: ColumnDetailsType;
 };
 
 export const BodyRows: React.FC<BodyRowCellType> = (props) => {
-  const { bodyRow, columnDetailsMap } = props;
+  const { bodyRow } = props;
 
   return (
-    <div className={styles.bodyRowContainer}>
+    <>
       {bodyRow.cells.map((bodyCell: BodyCellType) => {
-        const { width } = columnDetailsMap[bodyCell.columnKey];
         const cellContent = () => {
           switch (bodyCell.cellType) {
             case CellType.index:
@@ -66,12 +60,8 @@ export const BodyRows: React.FC<BodyRowCellType> = (props) => {
           }
         };
 
-        return (
-          <CellWrapper key={String(bodyCell.key)} width={width}>
-            {cellContent()}
-          </CellWrapper>
-        );
+        return <CellWrapper key={String(bodyCell.key)}>{cellContent()}</CellWrapper>;
       })}
-    </div>
+    </>
   );
 };
